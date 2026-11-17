@@ -37,6 +37,17 @@ try {
     const ok = await b.evaluate(`(document.querySelector('main')?.innerText || '').length`);
     console.log(`page ${r.padEnd(18)} ${ok > 20 ? 'ok' : 'EMPTY'} (${ok} chars)`);
   }
+  // every on-screen key label must fit inside its key, on every keyboard tab
+  const fit = await b.evaluate(`(async () => {
+    const sleep = ms => new Promise(r=>setTimeout(r,ms));
+    location.hash = '#/learn/explore'; await sleep(900);
+    const bad = [];
+    const check = () => document.querySelectorAll('.kcap[data-key]').forEach(k => { const r = k.getBoundingClientRect(); [...k.children].forEach(c => { const q = c.getBoundingClientRect(); if (q.width > 0 && (q.left < r.left - 0.5 || q.right > r.right + 0.5)) bad.push(k.dataset.key + ':' + Math.round(q.width) + '>' + Math.round(r.width)); }); });
+    const tabs = [...document.querySelectorAll('.kb-tab')];
+    if (tabs.length) for (const t of tabs) { t.click(); await sleep(300); check(); } else check();
+    return JSON.stringify({ keys: document.querySelectorAll('.kcap[data-key]').length, overflow: [...new Set(bad)] });
+  })()`);
+  console.log('key labels', fit);
   const pause = await b.evaluate(`(async () => {
     const sleep = ms => new Promise(r=>setTimeout(r,ms));
     const dlg = () => document.querySelector('[role=dialog][aria-label="Paused"]');

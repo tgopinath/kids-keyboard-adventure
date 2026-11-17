@@ -31,6 +31,8 @@ interface Props {
 }
 
 const ARROW_CLUSTER: Row[] = [[{ gap: 3.5 }], [{ gap: 3.5 }], [{ gap: 3.5 }], [{ gap: 3.5 }], [{ gap: 1.5 }, 'ArrowUp', { gap: 1 }], [{ gap: 0.5 }, 'ArrowLeft', 'ArrowDown', 'ArrowRight']];
+/** Short labels for wide keys when they get narrow on phones. */
+const SHORT: Record<string, string> = { Backspace: '⌫', CapsLock: 'Caps', ShiftLeft: '⇧', ShiftRight: '⇧', Enter: '⏎', ControlLeft: 'Ctrl', ControlRight: 'Ctrl', Space: 'Space' };
 const NUMBER_ROWS: Row[] = [['Digit1', 'Digit2', 'Digit3', 'Digit4', 'Digit5'], ['Digit6', 'Digit7', 'Digit8', 'Digit9', 'Digit0'], ['Backspace', 'Enter']];
 
 const rowUnits = (r: Row, widths?: Record<string, number>) =>
@@ -38,7 +40,7 @@ const rowUnits = (r: Row, widths?: Record<string, number>) =>
 
 export function VirtualKeyboard({
   layout = 'auto', glow = [], hint = null, good = null, oops = null, hidden = [], current = null, heat,
-  interactive = true, clickSound = true, caps = false, defaultSection = 'abc', label = 'On-screen keyboard', className = '',
+  interactive = true, clickSound = true, defaultSection = 'abc', label = 'On-screen keyboard', className = '',
 }: Props) {
   const wrap = useRef<HTMLDivElement>(null);
   const [width, setWidth] = useState(0);
@@ -110,8 +112,14 @@ export function VirtualKeyboard({
       isHidden && current === id ? 'is-current' : '',
     ].join(' ');
     const single = k.label.length <= 2;
-    const fs = single ? Math.min(u * 0.46, 30) : Math.max(10, Math.min(u * 0.24, 15));
-    const text = k.kind === 'letter' && !caps ? k.label : k.label;
+    // Labels must fit their key: on narrow keys use a short label, then shrink the text if needed.
+    const room = w * u - gap - 8;
+    let text = k.label;
+    let fs = single ? Math.min(u * 0.46, 30) : Math.min(u * 0.24, 15);
+    const textW = (t: string, f: number) => t.length * f * 0.62;
+    if (!single && textW(text, Math.max(fs, 11)) > room && SHORT[id]) text = SHORT[id];
+    if (text.length > 1) fs = Math.max(9, Math.min(fs, room / (text.length * 0.62)));
+    if (text.length <= 2 && !single) fs = Math.min(u * 0.42, 24);
     const style = {
       flex: "none" as const,
       width: w * u - gap,

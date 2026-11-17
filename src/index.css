@@ -226,6 +226,7 @@
 }
 
 
+@layer base {
 * { box-sizing: border-box; }
 :root { --font-key: 'Fredoka', 'Lato', ui-rounded, system-ui, sans-serif; }
 html { -webkit-text-size-adjust: 100%; }
@@ -254,6 +255,9 @@ button { font: inherit; color: inherit; }
 }
 .skip-link:focus { top: 16px; }
 
+}
+
+@layer components {
 /* Calm shell surfaces (Kolam): hairline borders, soft elevation */
 .toy {
   background: var(--surface);
@@ -389,6 +393,8 @@ button { font: inherit; color: inherit; }
 }
 :root[data-motion='reduce'] *, :root[data-motion='reduce'] *::before, :root[data-motion='reduce'] *::after {
   transition-duration: 0.01ms !important; animation-duration: 0.01ms !important;
+}
+
 }
 
 @keyframes pulse-ring { 0% { box-shadow: 0 4px 0 var(--shadow), 0 0 0 0 color-mix(in oklab, var(--k-glow) 80%, transparent); } 100% { box-shadow: 0 4px 0 var(--shadow), 0 0 0 14px transparent; } }
