@@ -100,7 +100,7 @@ export function FindKey({ level }: { level: number | null }) {
     <Frame round={round} escapeIsAnswer={target === 'Escape'} wide hud={<StarPill n={stars} label="stars this round" />}>
       <TargetMark id={target} />
       <div className="grid gap-4 lg:grid-cols-[1.3fr_1fr]">
-        <Bot text={line.text} say={line.say} mood={mood} size={104} className="panel p-4" />
+        <Bot text={line.text} say={line.say} mood={mood} className="panel p-4" />
         <div className="panel relative flex items-center justify-center gap-5 p-4">
           <span className="eyebrow absolute left-4 top-3">Find this key</span>
           {tk && (
@@ -113,7 +113,7 @@ export function FindKey({ level }: { level: number | null }) {
       </div>
       <div className="mt-4 flex items-center gap-3">
         <span className="whitespace-nowrap text-[15px] font-bold tnum" style={{ color: 'var(--muted)' }}>{Math.min(q + 1, QUESTIONS)} / {QUESTIONS}</span>
-        <ProgressBar pct={(q / QUESTIONS) * 100} color="coral" label="Questions answered" />
+        <ProgressBar pct={(q / QUESTIONS) * 100} label="Questions answered" />
       </div>
       <section className="panel mt-4 p-3 sm:p-5">
         <VirtualKeyboard layout="auto" hint={showHint ? target : null} good={good} oops={oops} clickSound />

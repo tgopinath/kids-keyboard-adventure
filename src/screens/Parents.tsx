@@ -2,7 +2,7 @@ import { Download, Lock, ShieldCheck, Trash2 } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import { BarChart } from '../components/BarChart';
 import { VirtualKeyboard } from '../components/VirtualKeyboard';
-import { Modal, TopBar, toneSoft } from '../components/ui';
+import { Modal, TopBar } from '../components/ui';
 import { ACTIVITIES, GAME_IDS, PATH, type ActivityId } from '../lib/activities';
 import { KEYS, shortName } from '../lib/keys';
 import { accuracyOf } from '../lib/adaptive';
@@ -26,11 +26,11 @@ function Gate({ onPass }: { onPass: () => void }) {
   return (
     <form onSubmit={check} className="panel mx-auto mt-6 max-w-md p-6 text-center">
       <Lock size={40} className="mx-auto" aria-hidden />
-      <h2 className="mt-3 text-[28px]">Grown-ups only</h2>
+      <h2 className="mt-3 text-[22px]">Grown-ups only</h2>
       <p className="mt-2" style={{ color: 'var(--muted)' }}>Answer this to open the parent dashboard.</p>
-      <label htmlFor="gate" className="mt-5 block font-display text-[34px] font-bold">What is {q.a} × {q.b}?</label>
+      <label htmlFor="gate" className="mt-5 block text-[24px] font-bold">What is {q.a} × {q.b}?</label>
       <input id="gate" inputMode="numeric" pattern="[0-9]*" autoComplete="off" value={v} onChange={(e) => { setV(e.target.value.replace(/\D/g, '')); setErr(false); }}
-        className="mx-auto mt-3 h-14 w-40 rounded-2xl text-center text-[26px] font-bold tnum" style={{ border: 'var(--bw) solid var(--line)', background: 'var(--surface-2)', color: 'var(--ink)' }} aria-invalid={err} aria-describedby={err ? 'gate-err' : undefined} />
+        className="mx-auto mt-3 h-12 w-40 rounded-xl text-center text-[22px] font-bold tnum" style={{ border: '1px solid var(--border-strong)', background: 'var(--surface-2)', color: 'var(--ink)' }} aria-invalid={err} aria-describedby={err ? 'gate-err' : undefined} />
       {err && <p id="gate-err" className="mt-2 font-bold" style={{ color: 'var(--oops)' }} role="alert">Not quite. Try again.</p>}
       <button type="submit" className="btn btn-primary mt-5 w-full">Open dashboard</button>
     </form>
@@ -102,15 +102,15 @@ function Dashboard() {
     <div className="grid gap-4 [&>*]:min-w-0">
       <dl className="grid grid-cols-2 gap-3 lg:grid-cols-3 [&>*]:min-w-0">
         {tiles.map(([k, v, c]) => (
-          <div key={k} className="toy p-4" style={{ background: toneSoft(c) }}>
-            <dt className="eyebrow">{k}</dt>
-            <dd className="m-0 mt-1 font-display text-[24px] font-bold tnum leading-tight">{v}</dd>
+          <div key={k} className="panel p-4" data-tone={c}>
+            <dt className="text-[13px] muted">{k}</dt>
+            <dd className="m-0 mt-1 text-[20px] font-bold tnum leading-tight">{v}</dd>
           </div>
         ))}
       </dl>
 
       <section className="panel p-4 sm:p-5">
-        <h2 className="text-[24px]">Improvement over time</h2>
+        <h2 className="text-[18px]">Improvement over time</h2>
         <p className="mt-1" style={{ color: 'var(--muted)' }}>
           {chrono.length >= 6 ? `Average accuracy went from ${avg(first)}% in the first 5 rounds to ${avg(last)}% in the latest 5.` : 'Play a few more rounds to see a trend.'}
         </p>
@@ -121,7 +121,7 @@ function Dashboard() {
       </section>
 
       <section className="panel p-4 sm:p-5">
-        <h2 className="text-[24px]">Hardest keys</h2>
+        <h2 className="text-[18px]">Hardest keys</h2>
         {hardest.length ? (
           <ul className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-4">
             {hardest.map((h) => (
@@ -137,7 +137,7 @@ function Dashboard() {
       </section>
 
       <section className="panel p-4 sm:p-5">
-        <h2 className="text-[24px]">Activities and games</h2>
+        <h2 className="text-[18px]">Activities and games</h2>
         <div className="mt-3 overflow-x-auto">
           <table className="w-full min-w-[560px] text-left text-[15px]">
             <thead>
@@ -164,7 +164,7 @@ function Dashboard() {
       </section>
 
       <section className="panel p-4 sm:p-5">
-        <h2 className="text-[24px]">Learning history</h2>
+        <h2 className="text-[18px]">Learning history</h2>
         {s.sessions.length ? (
           <ol className="mt-3 grid gap-2">
             {s.sessions.slice(0, 25).map((x) => (
@@ -182,12 +182,12 @@ function Dashboard() {
       </section>
 
       <section className="panel p-4 sm:p-5">
-        <h2 className="text-[24px]">Settings</h2>
+        <h2 className="text-[18px]">Settings</h2>
         <SettingsPanel />
       </section>
 
-      <section className="panel p-4 sm:p-5" style={{ background: 'var(--mint-soft)' }}>
-        <h2 className="flex items-center gap-2 text-[24px]"><ShieldCheck size={26} aria-hidden /> Privacy</h2>
+      <section className="panel p-4 sm:p-5">
+        <h2 className="flex items-center gap-2 text-[18px]"><ShieldCheck size={26} aria-hidden /> Privacy</h2>
         <p className="mt-2 max-w-[70ch]">There are no accounts, ads, analytics or trackers. All progress is saved in this browser only (localStorage) and never leaves the device. Voice uses the speech engine built into the browser, and every sound is made on the device.</p>
         <div className="mt-4 flex flex-wrap gap-3">
           <button type="button" className="btn btn-sm" onClick={exportData}><Download size={18} aria-hidden /> Save a copy of progress</button>
@@ -196,7 +196,7 @@ function Dashboard() {
       </section>
 
       <Modal open={confirm} onClose={() => setConfirm(false)} label="Reset all progress?">
-        <h2 className="text-[26px]">Reset all progress?</h2>
+        <h2 className="text-[22px]">Reset all progress?</h2>
         <p className="mt-2">This removes stars, coins, badges, levels and history from this device. Settings stay. It cannot be undone.</p>
         <div className="mt-5 grid grid-cols-2 gap-3">
           <button type="button" className="btn" data-autofocus onClick={() => setConfirm(false)}>Keep it</button>

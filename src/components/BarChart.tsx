@@ -18,7 +18,7 @@ export function BarChart({ title, bars, max, unit = '', color = 'var(--primary)'
   return (
     <figure className="m-0">
       <div className="mb-2 flex items-center justify-between gap-3">
-        <figcaption className="font-display text-[19px] font-semibold">{title}</figcaption>
+        <figcaption className="text-[15px] font-bold">{title}</figcaption>
         <button type="button" className="chip" style={{ minHeight: 34 }} onClick={() => setTable((t) => !t)} aria-pressed={table}>{table ? 'Show chart' : 'Show table'}</button>
       </div>
       {table ? (

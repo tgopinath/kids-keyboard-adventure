@@ -118,14 +118,14 @@ export function BubblePop({ level }: { level: number | null }) {
       <TargetMark id={target?.key} />
       <div className="grid gap-4 lg:grid-cols-[1fr_2fr]">
         <div className="flex flex-col gap-4">
-          <Bot text={line.text} say={line.say} mood={mood} size={96} className="panel p-4" />
+          <Bot text={line.text} say={line.say} mood={mood} className="panel p-4" />
           <div className="flex items-center gap-3">
             <span className="whitespace-nowrap text-[15px] font-bold tnum" style={{ color: 'var(--muted)' }}>{popped} / {POPS}</span>
-            <ProgressBar pct={(popped / POPS) * 100} color="pink" label="Bubbles popped" />
+            <ProgressBar pct={(popped / POPS) * 100} label="Bubbles popped" />
           </div>
           {target && (
-            <div className="toy hidden items-center justify-center gap-4 p-4 lg:flex" style={{ background: 'var(--pink-soft)' }} aria-hidden>
-              <span className="font-display text-[22px] font-bold">Pop</span>
+            <div className="toy hidden items-center justify-center gap-4 p-4 lg:flex" aria-hidden>
+              <span className="text-[17px] font-bold">Pop</span>
               <span className="kcap" data-kind={target.key.startsWith('Digit') ? 'number' : 'letter'} style={{ width: 96, height: 96, fontSize: 56, cursor: 'default' }}>{label(target.key)}</span>
             </div>
           )}

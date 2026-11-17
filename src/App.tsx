@@ -5,7 +5,7 @@ import { setAudioPrefs, unlockAudio, sfx } from './lib/audio';
 import { actions, onBadges, useStore } from './lib/store';
 import { useRoute, go } from './lib/router';
 import { BADGES } from './lib/rewards';
-import { ICONS, toneSoft } from './components/ui';
+import { ICONS } from './components/ui';
 import { Home } from './screens/Home';
 import { LearnHub, GamesHub } from './screens/Hubs';
 import { MeetKeyboard } from './screens/MeetKeyboard';
@@ -86,9 +86,9 @@ function BadgeToasts() {
           if (!b) return null;
           const I = ICONS[b.icon];
           return (
-            <motion.div key={id} className="toy pointer-events-auto flex items-center gap-3 px-4 py-3" style={{ background: toneSoft(b.color) }} initial={{ y: -40, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: -30, opacity: 0 }}>
-              <span className="grid h-11 w-11 place-items-center rounded-full" style={{ background: 'var(--surface)', border: 'var(--bw) solid var(--line)' }}><I size={24} aria-hidden /></span>
-              <span><span className="eyebrow block">New badge</span><b className="font-display text-[19px]">{b.name}</b></span>
+            <motion.div key={id} className="toy pointer-events-auto flex items-center gap-3 px-4 py-3" style={{ boxShadow: 'var(--elev-2)' }} initial={{ y: -40, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: -30, opacity: 0 }}>
+              <span className="icon-tile"><I size={20} aria-hidden /></span>
+              <span><span className="eyebrow block">New badge</span><b className="text-[15px]">{b.name}</b></span>
               <button type="button" className="chip ml-2" onClick={() => go('/rewards')}>See</button>
             </motion.div>
           );
@@ -101,7 +101,7 @@ function BadgeToasts() {
 function NotFound() {
   return (
     <div className="mx-auto max-w-lg px-4 py-16 text-center">
-      <h1 className="text-[36px]">This page went on an adventure</h1>
+      <h1 className="text-[24px]">This page went on an adventure</h1>
       <p className="mt-3" style={{ color: 'var(--muted)' }}>Let us go back home.</p>
       <button type="button" className="btn btn-primary mt-6" onClick={() => go('/')}>Go home</button>
     </div>

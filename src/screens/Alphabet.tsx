@@ -4,7 +4,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { Frame, useRound } from '../components/Frame';
 import { VirtualKeyboard } from '../components/VirtualKeyboard';
 import { Art } from '../components/Art';
-import { Bot, Modal, ProgressBar, StarBurst, StarPill, tone, toneSoft, TargetMark } from '../components/ui';
+import { Bot, Modal, ProgressBar, StarBurst, StarPill, TargetMark } from '../components/ui';
 import type { Mood } from '../components/KeyBot';
 import { ALPHABET, ENCOURAGE, PRAISE, pickOne } from '../lib/content';
 import { KEYS, LETTER_SAY, rowHint } from '../lib/keys';
@@ -31,13 +31,13 @@ export function AlphaCard({ a, revealed = true, size = 'md', onClick }: { a: Ent
           <motion.span key="q" className="grid place-items-center rounded-full font-display font-bold" style={{ width: big ? 170 : 84, height: big ? 170 : 84, background: 'var(--surface)', border: 'var(--bw) dashed var(--line)', fontSize: big ? 80 : 40, color: 'var(--muted)' }}>?</motion.span>
         )}
       </AnimatePresence>
-      <span className="font-display font-semibold" style={{ fontSize: big ? 34 : 18, visibility: revealed ? 'visible' : 'hidden' }}>{a.word}</span>
+      <span className="font-display font-semibold" style={{ fontSize: big ? 26 : 15, visibility: revealed ? 'visible' : 'hidden' }}>{a.word}</span>
     </>
   );
   const cls = 'panel flex flex-col items-center justify-center gap-2 p-4 text-center';
-  const style = { background: toneSoft(a.color), minHeight: big ? 360 : undefined };
+  const style = { minHeight: big ? 340 : undefined };
   return onClick ? (
-    <motion.button type="button" className={cls} style={style} onClick={onClick} whileHover={{ y: -3 }} whileTap={{ scale: 0.97 }} aria-label={`${a.letter} is for ${a.word}`}>{inner}</motion.button>
+    <motion.button type="button" className={cls} style={style} onClick={onClick} whileTap={{ scale: 0.98 }} aria-label={`${a.letter} is for ${a.word}`}>{inner}</motion.button>
   ) : (
     <div className={cls} style={style}>{inner}</div>
   );
@@ -53,7 +53,7 @@ function Gallery() {
   return (
     <section className="mt-6" aria-labelledby="cards-h">
       <div className="flex flex-wrap items-center justify-between gap-2">
-        <h2 id="cards-h" className="text-[26px]">Letter cards</h2>
+        <h2 id="cards-h" className="text-[18px]">Letter cards</h2>
         <span className="chip tnum">{found.length} of 26 found</span>
       </div>
       <p className="mt-1" style={{ color: 'var(--muted)' }}>Tap a card to hear it.</p>
@@ -151,10 +151,10 @@ export function Alphabet({ level }: { level: number | null }) {
       <TargetMark id={a ? `Key${a.letter}` : null} />
       <div className="grid gap-4 lg:grid-cols-[1fr_1fr]">
         <div className="flex flex-col gap-4">
-          <Bot text={line.text} say={line.say} mood={mood} size={100} className="panel p-4" />
+          <Bot text={line.text} say={line.say} mood={mood} className="panel p-4" />
           <div className="flex items-center gap-3">
             <span className="whitespace-nowrap text-[15px] font-bold tnum" style={{ color: 'var(--muted)' }}>{Math.min(q + 1, list.length)} / {list.length}</span>
-            <ProgressBar pct={(q / list.length) * 100} color="pink" label="Letters done" />
+            <ProgressBar pct={(q / list.length) * 100} label="Letters done" />
           </div>
         </div>
         <div className="relative">
@@ -165,7 +165,7 @@ export function Alphabet({ level }: { level: number | null }) {
           )}
           <StarBurst fire={burst} />
           {revealed && a && tries === 0 && (
-            <span className="sticker absolute right-3 top-3" style={{ background: tone(a.color), color: '#1d1a38' }}>+1 star</span>
+            <span className="sticker absolute right-3 top-3">+1 star</span>
           )}
         </div>
       </div>

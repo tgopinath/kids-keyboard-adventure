@@ -1,37 +1,38 @@
 <!--
-  Portfolio card for Kids Keyboard Adventure, ready to paste into the portfolio's index.html
-  (now ~/Documents/All pets/PetProjects, repo tgopinath/PetProjects) once the app is live.
-  It follows the Money Master card. Before pasting:
-    1. copy prototype/mobile.html + prototype/shots/*.jpg to prototypes/kids-keyboard/
-    2. copy tools/web-keyboard.jpg to assets/thumbs/web-keyboard.jpg
-    3. check the live URL below matches the Vercel project, and add the APK link if one is built.
+  Portfolio card for Kids Keyboard Adventure (web only: no APK, no phone mockup), for the portfolio's
+  index.html in ~/Documents/All pets/gopinath-portfolio (repo tgopinath/Portfolio).
+  The portfolio has no web-only layout yet, so this adds a small ".web" variant of the .duo thumb:
+  two desktop browser windows instead of a browser window plus phones.
+  Files:
+    tools/web-keyboard.jpg          -> assets/thumbs/web-keyboard.jpg
+    prototype/shots/web-games.jpg   -> prototypes/kids-keyboard/shots/web-games.jpg (via tools/sync.mjs)
 -->
 
-<!-- 1) at the end of #side-projects -->
+<!-- 1) the card (replaces the existing keyboard card) -->
   <article class="card wide" data-project="keyboard">
-    <div class="thumb wmt keyboard duo"><figure class="web-win"><span class="wbar"><i></i><i></i><i></i><b></b></span><img src="assets/thumbs/web-keyboard.jpg" alt="Kids Keyboard Adventure on a desktop browser: KeyBot the robot says A is for Apple, a big A card with an apple, and a full colour-coded keyboard with the A key glowing" width="1440" height="900" loading="lazy" decoding="async"></figure><div class="phones">
-      <img src="prototypes/kids-keyboard/shots/home.jpg" alt="Home on a phone: the Keyboard Adventure title, KeyBot greeting the child, and a Start learning card with the next lesson and a Play button" width="600" height="1298" loading="lazy" decoding="async">
-      <img src="prototypes/kids-keyboard/shots/falling.jpg" alt="Falling Letters: letters float down on parachutes over a meadow while the matching key glows on the on-screen keyboard" width="600" height="1298" loading="lazy" decoding="async">
-      <img src="prototypes/kids-keyboard/shots/builder.jpg" alt="Word Builder: a picture of a pen with three letter slots, the first letter P filled in" width="600" height="1298" loading="lazy" decoding="async">
-    </div></div>
+    <div class="thumb wmt keyboard duo web"><figure class="web-win"><span class="wbar"><i></i><i></i><i></i><b></b></span><img src="assets/thumbs/web-keyboard.jpg" alt="Meet Your Keyboard in a desktop browser: KeyBot says A is for Apple beside a big A card and an apple, above a full colour-coded keyboard with the A key glowing" width="1440" height="900" loading="lazy" decoding="async"></figure><figure class="web-win alt"><span class="wbar"><i></i><i></i><i></i><b></b></span><img src="prototypes/kids-keyboard/shots/web-games.jpg" alt="Bubble Pop in a desktop browser: KeyBot asks for a letter, four letter bubbles float over a meadow, and the letter keys sit below" width="1440" height="900" loading="lazy" decoding="async"></figure></div>
     <div class="wide-body">
       <h3>Kids Keyboard Adventure</h3>
-      <p>A keyboard game for children aged 3 to 10, guided by KeyBot, a robot who talks, cheers and changes his face as the child plays. Meet Your Keyboard explains every key aloud, from A to F12. Find the Key, Alphabet Adventure, Number Keyboard and a Memory Challenge teach where keys live; Falling Letters, Bubble Pop, Letter Catcher, Word Builder and Treasure Hunt make practice a game; Typing Challenge goes from single letters to sentences with live accuracy and speed. Smart Difficulty moves up at 90%, stays at 70–89% and steps down with hints below 70%, and missed keys come back more often. Stars and coins buy KeyBot hats, colours and new worlds. A parent dashboard behind a maths question shows time, accuracy, speed and the hardest keys, and nothing leaves the device. Every sound and the music are made in the browser.</p>
+      <p>A keyboard game for children aged 3 to 10, guided by KeyBot, a small robot who explains, encourages and celebrates. Meet Your Keyboard explains every key aloud, from A to F12. Find the Key, Alphabet Adventure, Number Keyboard and a Memory Challenge teach where keys live; Falling Letters, Bubble Pop, Letter Catcher, Word Builder and Treasure Hunt turn practice into play; Typing Challenge goes from single letters to sentences with live accuracy and speed. Smart Difficulty moves up at 90%, stays at 70–89% and steps down with hints below 70%, and missed keys come back more often. The interface is calm and neutral; only the on-screen keyboard keeps chunky, colour-coded keys a child can tell apart. A parent dashboard behind a maths question shows time, accuracy, speed and the hardest keys, and nothing leaves the device.</p>
       <ul class="wide-facts">
         <li><b>Role</b>Product design and front-end build</li>
         <li><b>Stack</b>React 19, TypeScript, Vite, Tailwind CSS, Framer Motion, Lucide, Web Audio, Web Speech</li>
-        <li><b>Status</b>Live web app</li>
+        <li><b>Status</b>Live website (web only)</li>
       </ul>
       <div class="get-app"><a class="live-dl" href="https://kids-keyboard-adventure.vercel.app" target="_blank" rel="noopener"><span><b>Open the live app ↗</b><small>Works with a real keyboard or by tapping the keys</small></span></a></div>
-      <div class="tags"><span class="tag">Mobile + Web App</span><span class="tag">Kids</span><span class="tag">AI Assisted</span><span class="tag live">Prototype</span><a class="round-arrow case-open" href="#" data-project="keyboard" aria-label="Open Kids Keyboard Adventure prototype">Open the project</a></div>
+      <div class="tags"><span class="tag">Web App</span><span class="tag">Kids</span><span class="tag">AI Assisted</span><span class="tag live">Prototype</span><a class="round-arrow case-open" href="#" data-project="keyboard" aria-label="Open Kids Keyboard Adventure prototype">Open the project</a></div>
     </div>
   </article>
 
-<!-- 2) next to the other .thumb.wmt lines in the <style> -->
-.thumb.wmt.keyboard{--base:#b9c4ff}
+<!-- 2) CSS, next to the other .thumb.wmt lines (the .web variant is new) -->
+.thumb.wmt.keyboard{--base:#c7cdf5}
+.thumb.wmt.duo.web .web-win{left:5%;top:9%;width:64%}.thumb.wmt.duo.web .web-win.alt{left:auto;right:5%;top:34%;width:50%;z-index:1}
 
 <!-- 3) in const data = { … } -->
 keyboard:["Kids Keyboard Adventure","A keyboard game for ages 3 to 10 with KeyBot the robot: every key explained aloud, find-the-key and memory challenges, five typing games, Smart Difficulty and a private parent dashboard, designed and built with AI-assisted coding."],
 
-<!-- 4) in const protos = { … } -->
-keyboard:{title:"Kids Keyboard Adventure",text:"KeyBot the robot teaches children the keyboard: every key explained aloud, find-the-key, A to Z and number games, a memory challenge, five typing games and typing levels up to sentences. Smart Difficulty adapts to each child, rewards dress up KeyBot, and a parent dashboard shows progress without any account.",views:[["Mobile app","prototypes/kids-keyboard/mobile.html"],["Web app","https://kids-keyboard-adventure.vercel.app/"]]},
+<!-- 4) in const protos = { … } (web only: one view, the live site) -->
+keyboard:{title:"Kids Keyboard Adventure",text:"KeyBot the robot teaches children the keyboard: every key explained aloud, find-the-key, A to Z and number games, a memory challenge, five typing games and typing levels up to sentences. Smart Difficulty adapts to each child, rewards dress up KeyBot, and a parent dashboard shows progress without any account.",views:[["Web app","https://kids-keyboard-adventure.vercel.app/"]]},
+
+<!-- 5) tools/sync.mjs APPS entry (replaces the one that copies mobile.html) -->
+{ key: 'keyboard', copy: [['All pets/Practice/kids-keyboard-adventure/prototype/shots', 'prototypes/kids-keyboard/shots']] }, // web only; desktop thumb: tools/web-keyboard.jpg -> assets/thumbs/web-keyboard.jpg

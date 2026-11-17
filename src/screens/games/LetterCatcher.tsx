@@ -161,7 +161,7 @@ export function LetterCatcher({ level }: { level: number | null }) {
         {(Object.keys(SPEEDS) as Speed[]).map((s) => {
           const I = SPEEDS[s].icon;
           return (
-            <button key={s} type="button" role="radio" aria-checked={speed === s} className="btn btn-sm" style={speed === s ? { background: 'var(--mint)', color: '#0b2a22' } : undefined}
+            <button key={s} type="button" role="radio" aria-checked={speed === s} className="btn btn-sm" style={speed === s ? { background: 'var(--primary-soft)', borderColor: 'var(--primary)', color: 'var(--primary-strong)' } : undefined}
               onClick={() => { setSpeed(s); try { localStorage.setItem('kka-catcher-speed', s); } catch { /* ignore */ } }}>
               <I size={20} aria-hidden /> {SPEEDS[s].name}
             </button>
@@ -175,14 +175,14 @@ export function LetterCatcher({ level }: { level: number | null }) {
     <Frame round={round} wide hud={<Score n={score} />} introExtra={speedPicker}>
       <TargetMark id={target} />
       <div className="mb-3 flex flex-wrap items-center gap-3">
-        <div className="toy flex items-center gap-3 px-4 py-2" style={{ background: 'var(--sun-soft)' }} aria-live="polite">
-          <KeyBot size={48} mood="thinking" still />
-          <span className="font-display text-[22px] font-bold">Catch</span>
+        <div className="toy flex items-center gap-3 px-3 py-2" aria-live="polite">
+          <KeyBot size={36} mood="thinking" still />
+          <span className="text-[16px] font-bold">Catch</span>
           <span className="kcap" data-kind="letter" style={{ width: 56, height: 56, fontSize: 32, cursor: 'default' }} aria-label={`the letter ${L(target)}`}>{L(target)}</span>
         </div>
         <div className="flex min-w-[200px] flex-1 items-center gap-3">
           <span className="whitespace-nowrap text-[15px] font-bold tnum" style={{ color: 'var(--muted)' }}>{done} / {TARGETS}</span>
-          <ProgressBar pct={(done / TARGETS) * 100} color="mint" label="Letters to catch" />
+          <ProgressBar pct={(done / TARGETS) * 100} label="Letters to catch" />
         </div>
         <span className="chip">{SPEEDS[speed].name}</span>
       </div>
@@ -199,7 +199,7 @@ export function LetterCatcher({ level }: { level: number | null }) {
           ))}
           <AnimatePresence>
             {flash && (
-              <motion.div key={flash.id} className="toy absolute left-1/2 top-4 px-4 py-2 font-display text-[20px] font-bold" style={{ background: flash.good ? 'var(--mint-soft)' : 'var(--oops-soft)' }} initial={{ x: '-50%', y: -10, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.25 }}>
+              <motion.div key={flash.id} className="toy absolute left-1/2 top-4 px-4 py-2 text-[16px] font-bold" style={{ color: flash.good ? 'var(--good)' : 'var(--oops)', boxShadow: 'var(--elev-2)' }} initial={{ x: '-50%', y: -10, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.25 }}>
                 {flash.text}
               </motion.div>
             )}

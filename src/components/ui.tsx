@@ -16,22 +16,22 @@ export const toneSoft = (c: string) => `var(--${c}-soft)`;
 
 export function StarPill({ n, label = 'stars' }: { n: number; label?: string }) {
   return (
-    <span className="chip tnum" aria-label={`${n} ${label}`} style={{ background: 'var(--sun-soft)' }}>
-      <Star size={18} fill="var(--sun)" stroke="var(--line)" strokeWidth={2.2} aria-hidden /> {n}
+    <span className="chip tnum" aria-label={`${n} ${label}`}>
+      <Star size={16} fill="var(--sun)" stroke="#b7860b" strokeWidth={1.8} aria-hidden /> {n}
     </span>
   );
 }
 export function CoinPill({ n }: { n: number }) {
   return (
-    <span className="chip tnum" aria-label={`${n} coins`} style={{ background: 'var(--orange-soft)' }}>
-      <Coins size={18} fill="var(--sun)" stroke="var(--line)" strokeWidth={2.2} aria-hidden /> {n}
+    <span className="chip tnum" aria-label={`${n} coins`}>
+      <Coins size={16} stroke="#b7860b" strokeWidth={2} aria-hidden /> {n}
     </span>
   );
 }
 
-export function ProgressBar({ pct, color = 'mint', label }: { pct: number; color?: string; label: string }) {
+export function ProgressBar({ pct, color = 'primary', label }: { pct: number; color?: string; label: string }) {
   return (
-    <div role="progressbar" aria-label={label} aria-valuemin={0} aria-valuemax={100} aria-valuenow={Math.round(pct)} className="h-4 w-full overflow-hidden rounded-full" style={{ border: 'var(--bw) solid var(--line)', background: 'var(--surface-2)' }}>
+    <div role="progressbar" aria-label={label} aria-valuemin={0} aria-valuemax={100} aria-valuenow={Math.round(pct)} className="h-2 w-full overflow-hidden rounded-full" style={{ background: 'var(--surface-2)', boxShadow: 'inset 0 0 0 1px var(--border)' }}>
       <motion.div className="h-full rounded-full" style={{ background: tone(color) }} initial={{ width: 0 }} animate={{ width: `${Math.max(0, Math.min(100, pct))}%` }} transition={{ type: 'spring', stiffness: 120, damping: 20 }} />
     </div>
   );
@@ -44,15 +44,15 @@ export function TopBar({ title, parent = '/', onPause, children }: { title: stri
   return (
     <header className="flex flex-wrap items-center gap-2 py-3 sm:flex-nowrap sm:gap-3">
       <button type="button" className="btn btn-icon" onClick={() => back(parent)} aria-label="Back">
-        <ArrowLeft size={26} strokeWidth={2.6} aria-hidden />
+        <ArrowLeft size={20} strokeWidth={2.2} aria-hidden />
       </button>
-      <h1 className="min-w-0 flex-1 truncate text-[22px] sm:text-[30px]">{title}</h1>
+      <h1 className="min-w-0 flex-1 truncate text-[19px] sm:text-[22px]">{title}</h1>
       {children && <div className="order-last flex w-full flex-wrap items-center gap-2 sm:order-none sm:w-auto sm:flex-nowrap">{children}</div>}
       <span className="hidden sm:inline-flex"><StarPill n={stars} /></span>
       <span className="hidden md:inline-flex"><CoinPill n={coins} /></span>
       {onPause && (
-        <button type="button" className="btn btn-icon btn-sun" onClick={onPause} aria-label="Pause (Esc)">
-          <Pause size={24} strokeWidth={2.8} aria-hidden />
+        <button type="button" className="btn btn-icon" onClick={onPause} aria-label="Pause (Esc)">
+          <Pause size={18} strokeWidth={2.4} aria-hidden />
         </button>
       )}
     </header>
@@ -63,7 +63,7 @@ export function TopBar({ title, parent = '/', onPause, children }: { title: stri
  * KeyBot with a speech bubble. Text is read aloud when it changes (if voice is on); the speaker
  * button repeats it. The bubble is a polite live region for screen readers.
  */
-export function Bot({ text, say, mood = 'happy', size = 120, side = 'left', className = '', speakOnChange = true, nonce }: {
+export function Bot({ text, say, mood = 'happy', size = 56, side = 'left', className = '', speakOnChange = true, nonce }: {
   text: string; say?: string; mood?: Mood; size?: number; side?: 'left' | 'top'; className?: string; speakOnChange?: boolean; nonce?: number;
 }) {
   const voice = useStore((s) => s.settings.voice);
@@ -78,8 +78,8 @@ export function Bot({ text, say, mood = 'happy', size = 120, side = 'left', clas
     return () => window.clearTimeout(t);
   }, [text, say, speakOnChange, nonce]);
   return (
-    <div className={`flex ${side === 'top' ? 'flex-col items-center text-center' : 'items-center'} gap-3 ${className}`}>
-      <div className="shrink-0"><KeyBot mood={mood} size={size} /></div>
+    <div className={`flex ${side === 'top' ? 'flex-col items-center text-center' : 'items-start'} gap-3 ${className}`}>
+      <div className="shrink-0"><KeyBot mood={mood} size={Math.min(size, 72)} /></div>
       <div className={`bubble ${side === 'top' ? 'up' : ''} min-w-0 flex-1`} aria-live="polite">
         {typing ? (
           <span className="inline-flex gap-1.5 py-2" aria-label="KeyBot is talking">
@@ -91,7 +91,7 @@ export function Bot({ text, say, mood = 'happy', size = 120, side = 'left', clas
           <span>{text}</span>
         )}
         {voice && text && (
-          <button type="button" onClick={() => speak(say ?? text)} className="ml-2 inline-flex h-9 w-9 translate-y-1 items-center justify-center rounded-full align-middle" style={{ border: '2px solid var(--line)', background: 'var(--sky-soft)' }} aria-label="Hear KeyBot again">
+          <button type="button" onClick={() => speak(say ?? text)} className="ml-1 inline-flex h-11 w-11 -my-2 items-center justify-center rounded-full align-middle" style={{ color: 'var(--primary-strong)' }} aria-label="Hear KeyBot again">
             <Volume2 size={18} aria-hidden />
           </button>
         )}
@@ -133,7 +133,7 @@ export function Modal({ open, onClose, label, children, wide = false }: { open: 
     <AnimatePresence>
       {open && (
         <motion.div className="fixed inset-0 z-50 flex items-end justify-center p-3 sm:items-center sm:p-6" style={{ background: 'rgba(20,16,48,.45)' }} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={(e) => e.target === e.currentTarget && onClose?.()}>
-          <motion.div ref={ref} role="dialog" aria-modal="true" aria-label={label} className={`panel max-h-[92dvh] w-full overflow-y-auto p-5 sm:p-7 ${wide ? 'max-w-2xl' : 'max-w-lg'}`} initial={{ y: 40, scale: 0.96 }} animate={{ y: 0, scale: 1 }} exit={{ y: 30, opacity: 0 }} transition={{ type: 'spring', stiffness: 260, damping: 24 }}>
+          <motion.div ref={ref} role="dialog" aria-modal="true" aria-label={label} className={`panel panel-lift max-h-[92dvh] w-full overflow-y-auto p-5 sm:p-6 ${wide ? 'max-w-2xl' : 'max-w-lg'}`} initial={{ y: 40, scale: 0.96 }} animate={{ y: 0, scale: 1 }} exit={{ y: 30, opacity: 0 }} transition={{ type: 'spring', stiffness: 260, damping: 24 }}>
             {children}
           </motion.div>
         </motion.div>
@@ -144,7 +144,7 @@ export function Modal({ open, onClose, label, children, wide = false }: { open: 
 
 const CONFETTI_COLORS = ['#ff5a5f', '#ffc83d', '#22c79a', '#38b6ff', '#8b5cf6', '#ff6fb5', '#ff9a3c'];
 /** A burst of confetti. Change `fire` to launch again. Skipped when motion is reduced. */
-export function Confetti({ fire, count = 46 }: { fire: number; count?: number }) {
+export function Confetti({ fire, count = 32 }: { fire: number; count?: number }) {
   const reduce = useReducedMotion();
   const [pieces, setPieces] = useState<{ id: number; x: number; r: number; c: string; d: number; s: number; round: boolean }[]>([]);
   useEffect(() => {
@@ -157,7 +157,7 @@ export function Confetti({ fire, count = 46 }: { fire: number; count?: number })
   return (
     <div className="pointer-events-none fixed inset-0 z-[60] overflow-hidden" aria-hidden>
       {pieces.map((p) => (
-        <motion.span key={p.id} className="absolute left-1/2 top-[35%] block" style={{ width: p.s, height: p.round ? p.s : p.s * 0.5, background: p.c, borderRadius: p.round ? 99 : 2, border: '1.5px solid #1d1a38' }}
+        <motion.span key={p.id} className="absolute left-1/2 top-[35%] block" style={{ width: p.s * 0.8, height: p.round ? p.s * 0.8 : p.s * 0.4, background: p.c, borderRadius: p.round ? 99 : 2, opacity: 0.9 }}
           initial={{ x: 0, y: 0, rotate: 0, opacity: 1 }}
           animate={{ x: p.x, y: [0, -260 - Math.random() * 120, 700], rotate: p.r, opacity: [1, 1, 0.9] }}
           transition={{ duration: p.d, ease: 'easeOut' }} />
@@ -202,8 +202,8 @@ export function Toggle({ on, onChange, label, hint }: { on: boolean; onChange: (
         <span className="block font-bold">{label}</span>
         {hint && <span className="block text-[15px]" style={{ color: 'var(--muted)' }}>{hint}</span>}
       </span>
-      <span className="relative h-9 w-16 shrink-0 rounded-full transition-colors" style={{ border: 'var(--bw) solid var(--line)', background: on ? 'var(--mint)' : 'var(--surface-2)' }}>
-        <motion.span className="absolute top-[3px] h-6 w-6 rounded-full" style={{ background: '#fff', border: '2px solid var(--line)' }} animate={{ left: on ? 32 : 4 }} transition={{ type: 'spring', stiffness: 500, damping: 30 }} />
+      <span className="relative h-7 w-12 shrink-0 rounded-full transition-colors" style={{ background: on ? 'var(--primary)' : 'var(--border-strong)' }}>
+        <motion.span className="absolute top-[3px] h-[22px] w-[22px] rounded-full" style={{ background: '#fff', boxShadow: '0 1px 2px rgba(0,0,0,.25)' }} animate={{ left: on ? 23 : 3 }} transition={{ type: 'spring', stiffness: 500, damping: 30 }} />
       </span>
     </button>
   );
@@ -226,7 +226,7 @@ export function Stars({ n, of = 3, size = 22 }: { n: number; of?: number; size?:
   return (
     <span className="inline-flex gap-0.5" aria-label={`${n} of ${of} stars`}>
       {Array.from({ length: of }, (_, i) => (
-        <Star key={i} size={size} fill={i < n ? 'var(--sun)' : 'transparent'} stroke="var(--line)" strokeWidth={2.2} aria-hidden />
+        <Star key={i} size={size} fill={i < n ? 'var(--sun)' : 'transparent'} stroke={i < n ? '#b7860b' : 'var(--border-strong)'} strokeWidth={1.8} aria-hidden />
       ))}
     </span>
   );
@@ -239,7 +239,7 @@ export function StarBurst({ fire }: { fire: number }) {
     <AnimatePresence>
       {fire > 0 && !reduce && (
         <motion.span key={fire} className="pointer-events-none absolute left-1/2 top-1/2 z-20" initial={{ x: '-50%', y: 0, scale: 0.5, opacity: 0 }} animate={{ y: -110, scale: [0.5, 1.4, 1], opacity: [0, 1, 0] }} transition={{ duration: 0.9 }} aria-hidden>
-          <Star size={56} fill="var(--sun)" stroke="#1d1a38" strokeWidth={2} />
+          <Star size={44} fill="var(--sun)" stroke="#b7860b" strokeWidth={1.5} />
         </motion.span>
       )}
     </AnimatePresence>

@@ -6,7 +6,7 @@ import { canSpeak, speak, sfx } from '../lib/audio';
 
 function Row({ icon, children }: { icon: ReactNode; children: ReactNode }) {
   return (
-    <div className="flex gap-3 border-b py-2 last:border-b-0" style={{ borderColor: 'color-mix(in oklab, var(--line) 15%, transparent)' }}>
+    <div className="flex gap-3 border-b py-2 last:border-b-0" style={{ borderColor: 'var(--border)' }}>
       <span className="mt-3 shrink-0" aria-hidden>{icon}</span>
       <div className="min-w-0 flex-1">{children}</div>
     </div>

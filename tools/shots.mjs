@@ -1,5 +1,7 @@
 // Captures the portfolio card screenshots: node tools/shots.mjs
-//   Phone shots: 600-wide JPEGs in prototype/shots. Desktop: 1440x900 JPEG in tools/web-keyboard.jpg
+//   Web only: the card shows two desktop browser windows, tools/web-keyboard.jpg (main thumb) and
+//   prototype/shots/web-games.jpg (second window), both 1440x900.
+//   With SHOT_OUT set it also captures phone-size screens for design checks (never used on the card).
 //   SHOT_URL=https://… to shoot the live site (default: local dev server). SHOT_DARK=1 for dark mode.
 //   SHOT_OUT=/some/dir writes everything there instead (for design checks).
 import fs from 'node:fs';
@@ -37,6 +39,8 @@ try {
     await evaluate(`(() => { window.__kkaNoSave = true; const k='kids-keyboard-adventure:v1'; const s = JSON.parse(localStorage.getItem(k)); s.coins = 140; s.owned.push('head:party','neck:bow','skin:mint'); s.equipped.head='head:party'; s.equipped.neck='neck:bow'; s.profile = { name: 'Asha', avatar: 0 }; s.streak = { last: s.streak.last, count: 3, best: 4 }; s.settings.music = false; s.settings.voice = false; localStorage.setItem(k, JSON.stringify(s)); location.hash = '#/'; location.reload(); 1 })()`);
     await sleep(2600);
     await evaluate(HELPERS);
+    // keep badge toasts out of the portfolio shots
+    await evaluate(`(() => { const st = document.createElement('style'); st.textContent = '[aria-live=assertive]{display:none!important}'; document.head.appendChild(st); return 1 })()`);
   };
   if (process.env.SHOT_DARK) await send('Emulation.setEmulatedMedia', { features: [{ name: 'prefers-color-scheme', value: 'dark' }] });
   else await send('Emulation.setEmulatedMedia', { features: [{ name: 'prefers-color-scheme', value: 'light' }] });
@@ -48,13 +52,15 @@ try {
   await evaluate(`__pid('KeyA'); 1`);
   await sleep(1500);
   await snap('web', 1440, WEB);
+  await go('#/games/bubbles'); await evaluate(playBtn); await sleep(1800);
+  await snap('web-games', 1440);
   if (process.env.SHOT_OUT) {
     await go('#/'); await snap('d-home', 1440);
-    await go('#/games/bubbles'); await evaluate(playBtn); await sleep(1600); await snap('d-bubbles', 1440);
     await go('#/parents'); await evaluate(`sessionStorage.setItem('kka-parent','1'); 1`); await go('#/'); await go('#/parents', 1500); await snap('d-parents', 1440);
   }
 
-  // Phone shots.
+  // Phone-size design checks (SHOT_OUT only).
+  if (process.env.SHOT_OUT) {
   await send('Emulation.setDeviceMetricsOverride', { width: 390, height: 844, deviceScaleFactor: 2, mobile: true });
   await go('#/', 5200);
   await snap('home');
@@ -86,7 +92,8 @@ try {
     await go('#/parents', 1500); await snap('m-parents');
     await go('#/progress'); await snap('m-progress');
   }
-  console.log('captured', fs.readdirSync(OUT).join(', '));
+  }
+  console.log('captured', fs.readdirSync(OUT).join(', '), process.env.SHOT_OUT ? '' : '+ tools/web-keyboard.jpg');
 } finally {
   await b.close();
 }

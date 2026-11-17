@@ -7,7 +7,7 @@ import { actions, useStore, type RoundOutcome } from '../lib/store';
 import { useCapture, useKeys } from '../lib/input';
 import { sfx, speak, stopSpeaking, unlockAudio } from '../lib/audio';
 import { go } from '../lib/router';
-import { Bot, Confetti, Modal, Stars, Toggle, TopBar, ICONS, LockBadge, tone, toneSoft } from './ui';
+import { Bot, Confetti, Modal, Stars, Toggle, TopBar, ICONS, LockBadge } from './ui';
 import { KeyBot } from './KeyBot';
 
 export type Phase = 'ready' | 'play' | 'done';
@@ -129,11 +129,11 @@ export function LevelPicker({ activity, level, onPick }: { activity: ActivityId;
         const sel = l === level;
         return (
           <button key={l} type="button" role="radio" aria-checked={sel} disabled={locked} onClick={() => onPick(l)}
-            className="flex min-h-[64px] min-w-[120px] flex-col items-center justify-center gap-1 rounded-2xl px-3 py-2 text-[15px] font-bold"
-            style={{ border: 'var(--bw) solid var(--line)', boxShadow: sel ? '0 2px 0 var(--shadow)' : '0 4px 0 var(--shadow)', background: sel ? tone(meta.color) : locked ? 'var(--surface-2)' : 'var(--surface)', color: sel ? '#1d1a38' : 'var(--ink)', opacity: locked ? 0.6 : 1, transform: sel ? 'translateY(2px)' : undefined }}
+            className="flex min-h-[64px] min-w-[120px] flex-col items-center justify-center gap-1 rounded-xl px-3 py-2 text-[14px]"
+            style={{ border: `1px solid ${sel ? 'var(--primary)' : 'var(--border)'}`, boxShadow: sel ? 'inset 0 0 0 1px var(--primary)' : undefined, background: sel ? 'var(--primary-soft)' : locked ? 'var(--surface-2)' : 'var(--surface)', color: 'var(--ink)', opacity: locked ? 0.6 : 1 }}
             aria-label={`Level ${l}: ${name}${locked ? ', locked' : ''}`}>
-            <span className="flex items-center gap-1 font-display text-[17px]">{locked ? <LockBadge /> : null} Level {l}</span>
-            <span className="max-w-[150px] text-center text-[13px] leading-tight" style={{ opacity: 0.85 }}>{name}</span>
+            <span className="flex items-center gap-1 font-bold">{locked ? <LockBadge /> : null} Level {l}</span>
+            <span className="max-w-[150px] text-center text-[13px] leading-tight muted">{name}</span>
             {!locked && <Stars n={a.rating[l] ?? 0} size={14} />}
           </button>
         );
@@ -147,8 +147,8 @@ function PauseMenu({ open, onResume, onRestart, onExit }: { open: boolean; onRes
   return (
     <Modal open={open} onClose={onResume} label="Paused">
       <div className="flex flex-col items-center gap-3 text-center">
-        <KeyBot mood="sleepy" size={96} />
-        <h2 className="text-[30px]">Paused</h2>
+        <KeyBot mood="sleepy" size={64} />
+        <h2 className="text-[22px]">Paused</h2>
         <p style={{ color: 'var(--muted)' }}>Take a little rest. Your game is waiting.</p>
       </div>
       <div className="mt-5 grid gap-3">
@@ -156,7 +156,7 @@ function PauseMenu({ open, onResume, onRestart, onExit }: { open: boolean; onRes
         <button type="button" className="btn" onClick={onRestart}><RotateCcw size={22} aria-hidden /> Start again</button>
         <button type="button" className="btn" onClick={onExit}><Home size={22} aria-hidden /> Leave the game</button>
       </div>
-      <div className="mt-5 grid gap-1 border-t pt-3" style={{ borderColor: 'var(--line)' }}>
+      <div className="mt-5 grid gap-1 border-t pt-3" style={{ borderColor: 'var(--border)' }}>
         <Toggle on={st.music} onChange={(v) => actions.settings({ music: v })} label="Music" />
         <Toggle on={st.sfx} onChange={(v) => actions.settings({ sfx: v })} label="Sound effects" />
         <Toggle on={st.voice} onChange={(v) => actions.settings({ voice: v })} label="KeyBot's voice" />
@@ -185,10 +185,10 @@ function ResultCard({ round, onExit, extra }: { round: Round; onExit: () => void
       <Confetti fire={fire} />
       <Modal open label="Round finished" onClose={undefined} wide>
         <div className="flex flex-col items-center gap-2 text-center">
-          <KeyBot mood={o.passed ? 'excited' : 'oops'} size={110} />
-          <h2 className="text-[32px]">{o.passed ? (o.rating === 3 ? 'Perfect!' : 'Well done!') : 'Good try!'}</h2>
-          <Stars n={o.rating} size={40} />
-          <p className="max-w-md text-[18px]" style={{ color: 'var(--muted)' }}>{DECISION_LINE[o.passed ? o.decision : 'down']}</p>
+          <KeyBot mood={o.passed ? 'excited' : 'oops'} size={72} />
+          <h2 className="text-[24px]">{o.passed ? (o.rating === 3 ? 'Perfect!' : 'Well done!') : 'Good try!'}</h2>
+          <Stars n={o.rating} size={28} />
+          <p className="max-w-md text-[16px] muted">{DECISION_LINE[o.passed ? o.decision : 'down']}</p>
         </div>
         <dl className="mt-4 grid grid-cols-3 gap-2 text-center">
           {[
@@ -196,9 +196,9 @@ function ResultCard({ round, onExit, extra }: { round: Round; onExit: () => void
             o.score ? ['Score', String(o.score)] : ['Correct', String(o.correct)],
             ['Coins', `+${o.coins}`],
           ].map(([k, v], i) => (
-            <div key={k} className="toy px-2 py-3" style={{ background: [toneSoft('mint'), toneSoft('sky'), toneSoft('sun')][i] }}>
-              <dt className="eyebrow">{k}</dt>
-              <dd className="m-0 font-display text-[28px] font-bold tnum">{v}</dd>
+            <div key={k} className="toy px-2 py-3" data-i={i}>
+              <dt className="text-[13px] muted">{k}</dt>
+              <dd className="m-0 text-[22px] font-bold tnum">{v}</dd>
             </div>
           ))}
         </dl>
@@ -206,22 +206,22 @@ function ResultCard({ round, onExit, extra }: { round: Round; onExit: () => void
         {(o.newlyUnlocked || lesson || o.newBadges.length > 0) && (
           <ul className="mt-4 grid gap-2">
             {o.newlyUnlocked && (
-              <li className="toy flex items-center gap-3 px-4 py-3" style={{ background: toneSoft('grape') }}>
-                <span className="sticker" style={{ background: 'var(--grape)', color: '#fff' }}>New</span>
+              <li className="toy flex items-center gap-3 px-4 py-3">
+                <span className="sticker">New</span>
                 Level {o.newlyUnlocked} is open: {meta.levels[o.newlyUnlocked - 1]}
               </li>
             )}
             {lesson && (
-              <li className="toy flex items-center gap-3 px-4 py-3" style={{ background: toneSoft('mint') }}>
-                <Check size={22} aria-hidden /> Lesson done: {lesson.title}
+              <li className="toy flex items-center gap-3 px-4 py-3">
+                <Check size={20} color="var(--good)" aria-hidden /> Lesson done: {lesson.title}
               </li>
             )}
             {o.newBadges.map((b) => {
               const bd = BADGES.find((x) => x.id === b)!;
               const I = ICONS[bd.icon];
               return (
-                <li key={b} className="toy flex items-center gap-3 px-4 py-3" style={{ background: toneSoft(bd.color) }}>
-                  <I size={24} aria-hidden /> New badge: <b>{bd.name}</b>
+                <li key={b} className="toy flex items-center gap-3 px-4 py-3">
+                  <span className="icon-tile" style={{ width: 32, height: 32 }}><I size={18} aria-hidden /></span> New badge: <b>{bd.name}</b>
                 </li>
               );
             })}
@@ -271,21 +271,21 @@ export function Frame({ round, title, children, hud, introText, introExtra, read
         {hud}
       </TopBar>
       {round.phase === 'ready' ? (
-        <motion.section className="panel mx-auto mt-2 max-w-3xl p-5 sm:p-8" initial={{ y: 16, opacity: 0 }} animate={{ y: 0, opacity: 1 }} aria-label={`${meta.name} start`}>
-          <Bot text={introText ?? meta.intro} mood="wave" size={110} />
+        <motion.section className="panel mx-auto mt-2 max-w-2xl p-5 sm:p-6" initial={{ y: 16, opacity: 0 }} animate={{ y: 0, opacity: 1 }} aria-label={`${meta.name} start`}>
+          <Bot text={introText ?? meta.intro} mood="wave" />
           {introExtra}
           <div className="mt-6">
-            <button type="button" className="mx-auto mb-3 flex items-center gap-2 font-display text-[18px] font-semibold" onClick={() => setShowLevels((v) => !v)} aria-expanded={showLevels}>
+            <button type="button" className="mx-auto mb-3 flex min-h-[44px] items-center gap-2 text-[15px] font-bold" onClick={() => setShowLevels((v) => !v)} aria-expanded={showLevels}>
               Level {round.level}: {meta.levels[round.level - 1]} <ChevronDown size={20} style={{ transform: showLevels ? 'rotate(180deg)' : undefined }} aria-hidden />
             </button>
             {showLevels && <LevelPicker activity={round.activity} level={round.level} onPick={(l) => round.setLevel(l)} />}
           </div>
           <div className="mt-6 flex justify-center">
-            <button type="button" className="btn btn-primary min-w-[220px] text-[24px]" style={{ minHeight: 68 }} onClick={round.start} autoFocus>
-              <Play size={28} fill="currentColor" aria-hidden /> Play
+            <button type="button" className="btn btn-primary min-w-[200px]" style={{ minHeight: 52 }} onClick={round.start} autoFocus>
+              <Play size={18} fill="currentColor" aria-hidden /> Play
             </button>
           </div>
-          <p className="mt-4 text-center text-[14px]" style={{ color: 'var(--muted)' }}>
+          <p className="mt-4 text-center text-[13px] muted">
             Use a real keyboard or tap the keys on the screen. Press <kbd className="font-bold">Esc</kbd> to pause.
           </p>
         </motion.section>

@@ -131,8 +131,8 @@ export function FallingLetters({ level }: { level: number | null }) {
     <Frame round={round} wide hud={<><Score n={score} /><Lives left={lives} of={LIVES} /></>}>
       <div className="mb-3 flex items-center gap-3">
         <span className="whitespace-nowrap text-[15px] font-bold tnum" style={{ color: 'var(--muted)' }}>{cleared} / {cfg.goal}</span>
-        <ProgressBar pct={(cleared / cfg.goal) * 100} color="sky" label="Letters caught" />
-        {combo >= 3 && <span className="sticker" style={{ background: 'var(--pink)', color: '#1d1a38' }}>Combo x{combo}</span>}
+        <ProgressBar pct={(cleared / cfg.goal) * 100} label="Letters caught" />
+        {combo >= 3 && <span className="sticker">Combo x{combo}</span>}
       </div>
       <div ref={stageRef}>
         <Stage height={H} label="Falling letters">

@@ -108,21 +108,21 @@ export function WordBoard({ round, words, scoring, onWordDone }: { round: Round;
       <Confetti fire={fire} count={30} />
       <div className="grid gap-4 lg:grid-cols-[1fr_1.4fr]">
         <div className="flex flex-col gap-4">
-          <Bot text={line.text} say={line.say} mood={mood} size={96} className="panel p-4" />
+          <Bot text={line.text} say={line.say} mood={mood} className="panel p-4" />
           <div className="flex items-center gap-3">
             <span className="whitespace-nowrap text-[15px] font-bold tnum" style={{ color: 'var(--muted)' }}>Word {Math.min(w + 1, words.length)} of {words.length}</span>
-            <ProgressBar pct={(w / words.length) * 100} color="orange" label="Words built" />
+            <ProgressBar pct={(w / words.length) * 100} label="Words built" />
             {scoring && <Score n={score} />}
           </div>
         </div>
         <Stage height="auto" label="Word to build" className="flex flex-col items-center justify-center gap-4 p-5">
           <motion.div key={`${word}-${round.roundId}`} initial={{ scale: 0.4, rotate: -10, opacity: 0 }} animate={complete ? { scale: [1, 1.2, 1], rotate: [0, -6, 6, 0], opacity: 1 } : { scale: 1, rotate: 0, opacity: 1 }} transition={{ type: 'spring', stiffness: 260, damping: 14 }}
-            className="grid place-items-center rounded-[32px] p-3" style={{ background: 'var(--surface)', border: 'var(--bw) solid var(--line)', boxShadow: '0 6px 0 var(--shadow)' }}>
-            <Art name={WORD_ART[word] ?? 'star'} size={170} label={say(word)} />
+            className="grid place-items-center rounded-2xl p-3" style={{ background: 'var(--surface)', border: '1px solid var(--border)', boxShadow: 'var(--elev-2)' }}>
+            <Art name={WORD_ART[word] ?? 'star'} size={150} label={say(word)} />
           </motion.div>
           <motion.div key={shake} className="flex flex-wrap justify-center gap-2" animate={shake ? { x: [0, -10, 10, -6, 0] } : {}} transition={{ duration: 0.35 }} aria-label={`${word.length} letters. ${pos} typed.`}>
             {word.split('').map((c, i) => (
-              <span key={i} className="grid place-items-center rounded-2xl font-display font-bold" style={{ width: slot, height: slot * 1.1, fontSize: slot * 0.55, border: 'var(--bw) solid var(--line)', boxShadow: i === pos ? '0 0 0 4px var(--sun)' : '0 4px 0 var(--shadow)', background: i < pos ? 'var(--mint)' : i === pos ? 'var(--surface)' : 'var(--surface-2)', color: i < pos ? '#0b2a22' : 'var(--ink)' }}>
+              <span key={i} className="grid place-items-center rounded-2xl font-display font-bold" style={{ width: slot, height: slot * 1.1, fontSize: slot * 0.55, border: `1px solid ${i === pos ? 'var(--primary)' : 'var(--border-strong)'}`, boxShadow: i === pos ? '0 0 0 3px var(--primary-soft)' : 'none', background: i < pos ? 'var(--good-soft)' : 'var(--surface)', color: i < pos ? 'var(--good)' : 'var(--ink)' }}>
                 {i < pos ? c : i === pos && showHint ? <span style={{ opacity: 0.35 }}>{c}</span> : '_'}
               </span>
             ))}

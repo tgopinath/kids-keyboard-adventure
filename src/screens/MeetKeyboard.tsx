@@ -7,7 +7,7 @@ import { useState } from 'react';
 import { useMedia } from '../lib/useMedia';
 import { VirtualKeyboard } from '../components/VirtualKeyboard';
 import { Art, Dots } from '../components/Art';
-import { Bot, Confetti, ProgressBar, TopBar, toneSoft } from '../components/ui';
+import { Bot, Confetti, ProgressBar, TopBar } from '../components/ui';
 import { KEYS, LETTER_SAY, spokenName } from '../lib/keys';
 import { ALPHA_BY_LETTER, NUMBER_WORDS, PRAISE, pickOne } from '../lib/content';
 import { useCapture, useKeys } from '../lib/input';
@@ -32,7 +32,7 @@ function Picture({ id, caps, size }: { id: string; caps: boolean; size: number }
     return (
       <div className="flex flex-col items-center gap-1">
         <Art name={a.art} size={size} label={a.word} />
-        <span className="font-display text-[26px] font-bold">{caps ? a.word.toUpperCase() : a.word}</span>
+        <span className="text-[20px] font-bold">{caps ? a.word.toUpperCase() : a.word}</span>
       </div>
     );
   }
@@ -41,7 +41,7 @@ function Picture({ id, caps, size }: { id: string; caps: boolean; size: number }
     return (
       <div className="flex flex-col items-center gap-1">
         <Dots n={n} size={size * 0.93} />
-        <span className="font-display text-[26px] font-bold">{NUMBER_WORDS[n]}</span>
+        <span className="text-[20px] font-bold">{NUMBER_WORDS[n]}</span>
       </div>
     );
   }
@@ -128,11 +128,11 @@ export function MeetKeyboard() {
   return (
     <div className="mx-auto w-full max-w-[1400px] px-4 pb-10 sm:px-6">
       <TopBar title="Meet Your Keyboard" parent="/learn">
-        {caps && <span className="sticker" style={{ background: 'var(--grape)', color: '#fff' }}>Caps on</span>}
+        {caps && <span className="sticker">Caps on</span>}
       </TopBar>
       <div className="grid gap-4 lg:grid-cols-[1fr_1.2fr]">
-        <Bot text={line.text} say={line.say} mood={mood} size={110} nonce={n} className="panel p-4" />
-        <section className="panel relative flex min-h-[200px] items-center sm:min-h-[260px] justify-center gap-6 overflow-hidden p-5 sm:gap-10" style={{ background: k ? toneSoft(k.kind === 'letter' ? 'sky' : k.kind === 'number' ? 'sun' : k.kind === 'symbol' ? 'mint' : k.kind === 'function' ? 'orange' : k.kind === 'arrow' ? 'lime' : k.kind === 'modifier' ? 'grape' : 'pink') : 'var(--surface)' }} aria-live="polite" aria-label="The key you pressed">
+        <Bot text={line.text} say={line.say} mood={mood} nonce={n} className="panel p-4" />
+        <section className="panel relative flex min-h-[200px] items-center sm:min-h-[260px] justify-center gap-6 overflow-hidden p-5 sm:gap-10" style={{ background: 'var(--surface)' }} aria-live="polite" aria-label="The key you pressed">
           <AnimatePresence mode="popLayout">
             <motion.div key={`${current}-${n}`} className="flex flex-nowrap items-center justify-center gap-4 sm:gap-10" initial={{ scale: 0.4, rotate: -12, opacity: 0 }} animate={{ scale: 1, rotate: 0, opacity: 1 }} exit={{ scale: 0.6, opacity: 0 }} transition={{ type: 'spring', stiffness: 380, damping: 18 }}>
               <div className="kcap" data-kind={k?.kind ?? 'letter'} style={{ minWidth: box, height: box, fontSize: big.length > 3 ? box * 0.22 : box * 0.56, padding: '0 14px', cursor: 'default' }}>
@@ -143,7 +143,7 @@ export function MeetKeyboard() {
                   <Picture id={current!} caps={caps} size={box} />
                 </div>
               ) : (
-                <p className="max-w-xs text-center font-display text-[22px]">Every key has a job. Let us find out what they do!</p>
+                <p className="max-w-xs text-center text-[17px] muted">Every key has a job. Let us find out what they do!</p>
               )}
             </motion.div>
           </AnimatePresence>
@@ -165,7 +165,7 @@ export function MeetKeyboard() {
         <ul className="flex flex-wrap gap-2" aria-label="Key colours">
           {KIND_LEGEND.map(([kind, name]) => (
             <li key={kind} className="chip" style={{ minHeight: 36 }}>
-              <span className="kcap" data-kind={kind} style={{ width: 18, height: 18, borderRadius: 6, boxShadow: 'none', borderWidth: 2 }} aria-hidden /> {name}
+              <span className="kcap" data-kind={kind} style={{ width: 14, height: 14, borderRadius: 4, boxShadow: 'none', borderWidth: 1 }} aria-hidden /> {name}
             </li>
           ))}
         </ul>
@@ -174,8 +174,8 @@ export function MeetKeyboard() {
       <Confetti fire={fire} />
       <AnimatePresence>
         {celebrate && (
-          <motion.div className="toy fixed inset-x-4 bottom-4 z-40 mx-auto flex max-w-xl flex-wrap items-center gap-3 p-4" style={{ background: 'var(--mint-soft)' }} initial={{ y: 80, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: 80, opacity: 0 }} role="status">
-            <span className="font-display text-[20px] font-bold">Lesson done! You met 10 keys.</span>
+          <motion.div className="toy fixed inset-x-4 bottom-4 z-40 mx-auto flex max-w-xl flex-wrap items-center gap-3 p-4" style={{ boxShadow: 'var(--elev-2)' }} initial={{ y: 80, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: 80, opacity: 0 }} role="status">
+            <span className="text-[16px] font-bold">Lesson done! You met 10 keys.</span>
             <span className="ml-auto flex gap-2">
               <button type="button" className="btn btn-sm btn-primary" onClick={() => go(routeFor('find', 1))}>Next lesson</button>
               <button type="button" className="btn btn-sm" onClick={() => setCelebrate(false)}>Keep exploring</button>

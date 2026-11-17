@@ -87,7 +87,7 @@ export function Practice({ level }: { level: number | null }) {
       } else {
         sfx.star();
         setMood('happy');
-        setLine({ text: 'Done! The orange letters were tricky ones.', say: 'Done! Well tried.' });
+        setLine({ text: 'Done! The marked letters were tricky ones.', say: 'Done! Well tried.' });
       }
       window.setTimeout(() => {
         if (i + 1 >= items.length) {
@@ -108,13 +108,13 @@ export function Practice({ level }: { level: number | null }) {
   const big = target.length <= 3 ? 110 : target.length <= 6 ? 84 : 46;
 
   return (
-    <Frame round={round} wide hud={<><span className="chip tnum" style={{ background: 'var(--mint-soft)' }}>{acc || 100}% right</span><span className="chip tnum hidden sm:inline-flex" style={{ background: 'var(--grape-soft)' }}>{live} words/min</span></>}
+    <Frame round={round} wide hud={<><span className="chip tnum">{acc || 100}% right</span><span className="chip tnum hidden sm:inline-flex">{live} words/min</span></>}
       readyBelow={
         <ol className="mx-auto mt-6 grid max-w-3xl gap-2 sm:grid-cols-5">
           {PRACTICE_LEVELS.map((l, n) => (
-            <li key={l.name} className="toy p-3 text-center" style={{ background: n + 1 === round.level ? 'var(--grape-soft)' : 'var(--surface)' }}>
+            <li key={l.name} className="toy p-3 text-center" style={{ borderColor: n + 1 === round.level ? 'var(--primary)' : undefined, background: n + 1 === round.level ? 'var(--primary-soft)' : undefined }}>
               <span className="eyebrow block">Level {n + 1}</span>
-              <span className="block font-display text-[17px] font-bold">{l.name}</span>
+              <span className="block text-[14px] font-bold">{l.name}</span>
               <span className="block text-[13px]" style={{ color: 'var(--muted)' }}>{l.items[0]}</span>
             </li>
           ))}
@@ -123,10 +123,10 @@ export function Practice({ level }: { level: number | null }) {
       <Confetti fire={fire} />
       <div className="grid gap-4 lg:grid-cols-[1fr_2fr]">
         <div className="flex flex-col gap-4">
-          <Bot text={line.text} say={line.say} mood={mood} size={92} className="panel p-4" />
+          <Bot text={line.text} say={line.say} mood={mood} className="panel p-4" />
           <div className="flex items-center gap-3">
             <span className="whitespace-nowrap text-[15px] font-bold tnum" style={{ color: 'var(--muted)' }}>{Math.min(i + 1, items.length)} / {items.length}</span>
-            <ProgressBar pct={(i / items.length) * 100} color="grape" label="Lines typed" />
+            <ProgressBar pct={(i / items.length) * 100} label="Lines typed" />
           </div>
         </div>
         <section className="panel flex min-h-[220px] items-center justify-center p-5" aria-label="Text to type">

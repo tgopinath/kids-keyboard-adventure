@@ -73,17 +73,17 @@ function Mouth({ mood, talking }: { mood: Mood; talking: boolean }) {
   }
   if (mood === 'excited' || mood === 'wave') return <path d="M84 107 Q100 126 116 107 Z" fill={GLOW} />;
   if (mood === 'surprised') return <ellipse cx={100} cy={114} rx={7} ry={8} fill={GLOW} />;
-  if (mood === 'oops') return <path d="M88 116 Q100 108 112 116" stroke={GLOW} strokeWidth={5} fill="none" strokeLinecap="round" />;
-  if (mood === 'thinking') return <path d="M90 113 L110 111" stroke={GLOW} strokeWidth={5} strokeLinecap="round" />;
+  if (mood === 'oops') return <path d="M88 116 Q100 108 112 116" stroke={GLOW} strokeWidth={3.5} fill="none" strokeLinecap="round" />;
+  if (mood === 'thinking') return <path d="M90 113 L110 111" stroke={GLOW} strokeWidth={3.5} strokeLinecap="round" />;
   if (mood === 'sleepy') return <ellipse cx={100} cy={114} rx={5} ry={4} fill={GLOW} />;
-  return <path d="M86 108 Q100 121 114 108" stroke={GLOW} strokeWidth={5} fill="none" strokeLinecap="round" />;
+  return <path d="M86 108 Q100 121 114 108" stroke={GLOW} strokeWidth={3.5} fill="none" strokeLinecap="round" />;
 }
 
 function Head({ item }: { item: string }) {
   switch (item) {
     case 'head:cap':
       return (
-        <g stroke={INK} strokeWidth={5} strokeLinejoin="round">
+        <g stroke={INK} strokeWidth={3.5} strokeLinejoin="round">
           <path d="M44 52 Q48 18 100 18 Q152 18 156 52 Z" fill="#ff6b6b" />
           <path d="M140 50 Q176 46 184 56 Q160 62 138 58 Z" fill="#ff6b6b" />
           <circle cx={100} cy={18} r={6} fill="#ffc83d" />
@@ -91,15 +91,15 @@ function Head({ item }: { item: string }) {
       );
     case 'head:party':
       return (
-        <g stroke={INK} strokeWidth={5} strokeLinejoin="round" transform="rotate(-14 70 40)">
+        <g stroke={INK} strokeWidth={3.5} strokeLinejoin="round" transform="rotate(-14 70 40)">
           <path d="M46 46 L70 -10 L94 46 Z" fill="#8b5cf6" />
-          <path d="M55 26 L85 26 M60 12 L80 12" stroke="#ffc83d" strokeWidth={5} />
+          <path d="M55 26 L85 26 M60 12 L80 12" stroke="#ffc83d" strokeWidth={3.5} />
           <circle cx={70} cy={-12} r={8} fill="#ff6fb5" />
         </g>
       );
     case 'head:phones':
       return (
-        <g stroke={INK} strokeWidth={5}>
+        <g stroke={INK} strokeWidth={3.5}>
           <path d="M26 92 Q26 22 100 22 Q174 22 174 92" fill="none" strokeWidth={10} />
           <path d="M26 92 Q26 22 100 22 Q174 22 174 92" fill="none" stroke="#ff6fb5" strokeWidth={4} />
           <rect x={8} y={70} width={30} height={46} rx={12} fill="#ff6fb5" />
@@ -108,7 +108,7 @@ function Head({ item }: { item: string }) {
       );
     case 'head:crown':
       return (
-        <g stroke={INK} strokeWidth={5} strokeLinejoin="round">
+        <g stroke={INK} strokeWidth={3.5} strokeLinejoin="round">
           <path d="M58 46 L54 14 L76 30 L100 8 L124 30 L146 14 L142 46 Z" fill="#ffc83d" />
           <circle cx={100} cy={32} r={5} fill="#ff6b6b" />
           <circle cx={76} cy={38} r={4} fill="#22c79a" />
@@ -190,12 +190,12 @@ export function KeyBot({ mood = 'happy', size = 140, talking: talkingProp, class
   const body = reduce
     ? {}
     : mood === 'excited'
-      ? { y: [0, -22, 0, -12, 0], rotate: [0, -4, 4, 0] }
+      ? { y: [0, -8, 0], rotate: [0, -2, 2, 0] }
       : mood === 'oops'
-        ? { rotate: [0, -7, 5, -3, 0] }
+        ? { rotate: [0, -4, 3, 0] }
         : mood === 'thinking'
           ? { rotate: [0, 5, 5, 0] }
-          : { y: [0, -5, 0] };
+          : { y: [0, -2, 0] };
   const bodyT = mood === 'excited' ? { duration: 0.9 } : mood === 'oops' ? { duration: 0.7 } : { duration: 2.6, repeat: Infinity, ease: 'easeInOut' as const };
   const armUp = mood === 'excited' || mood === 'wave';
 
@@ -212,37 +212,29 @@ export function KeyBot({ mood = 'happy', size = 140, talking: talkingProp, class
       transition={bodyT}
       style={{ overflow: 'visible', transformOrigin: '50% 90%' }}
     >
-      {/* shadow */}
-      <ellipse cx={100} cy={216} rx={54} ry={7} fill={INK} opacity={0.12} />
       {/* antenna */}
-      <line x1={100} y1={40} x2={100} y2={16} stroke={INK} strokeWidth={5} />
+      <line x1={100} y1={40} x2={100} y2={16} stroke={INK} strokeWidth={3.5} />
       <motion.circle cx={100} cy={12} r={9} fill="#ffc83d" stroke={INK} strokeWidth={4} animate={reduce ? {} : { scale: talking ? [1, 1.25, 1] : [1, 1.08, 1] }} transition={{ duration: talking ? 0.5 : 1.8, repeat: Infinity }} />
       {/* arms */}
-      <motion.g animate={reduce ? {} : { rotate: armUp ? [-10, -60, -30, -60] : [0, 6, 0] }} transition={{ duration: armUp ? 0.8 : 2.6, repeat: armUp && mood === 'excited' ? 0 : Infinity }} style={{ transformOrigin: '58px 168px' }}>
-        <rect x={22} y={160} width={40} height={16} rx={8} fill={skin.dark} stroke={INK} strokeWidth={5} />
-        <circle cx={22} cy={168} r={10} fill={skin.light} stroke={INK} strokeWidth={5} />
+      <motion.g animate={reduce ? {} : { rotate: armUp ? [0, -40, -25] : [0, 0, 0] }} transition={{ duration: armUp ? 0.8 : 2.6, repeat: armUp && mood === 'excited' ? 0 : Infinity }} style={{ transformOrigin: '58px 168px' }}>
+        <rect x={22} y={160} width={40} height={16} rx={8} fill={skin.dark} stroke={INK} strokeWidth={3.5} />
+        <circle cx={22} cy={168} r={10} fill={skin.light} stroke={INK} strokeWidth={3.5} />
       </motion.g>
-      <motion.g animate={reduce ? {} : { rotate: armUp ? [10, 60, 30, 60] : [0, -6, 0] }} transition={{ duration: armUp ? 0.8 : 2.6, repeat: armUp && mood === 'excited' ? 0 : Infinity }} style={{ transformOrigin: '142px 168px' }}>
-        <rect x={138} y={160} width={40} height={16} rx={8} fill={skin.dark} stroke={INK} strokeWidth={5} />
-        <circle cx={178} cy={168} r={10} fill={skin.light} stroke={INK} strokeWidth={5} />
+      <motion.g animate={reduce ? {} : { rotate: armUp ? [0, 40, 25] : [0, 0, 0] }} transition={{ duration: armUp ? 0.8 : 2.6, repeat: armUp && mood === 'excited' ? 0 : Infinity }} style={{ transformOrigin: '142px 168px' }}>
+        <rect x={138} y={160} width={40} height={16} rx={8} fill={skin.dark} stroke={INK} strokeWidth={3.5} />
+        <circle cx={178} cy={168} r={10} fill={skin.light} stroke={INK} strokeWidth={3.5} />
       </motion.g>
       {/* body */}
-      <rect x={86} y={144} width={28} height={14} fill={skin.dark} stroke={INK} strokeWidth={5} />
-      <rect x={54} y={152} width={92} height={58} rx={22} fill={skin.body} stroke={INK} strokeWidth={5} />
-      <rect x={70} y={166} width={60} height={30} rx={10} fill="#ffffff" fillOpacity={0.35} />
-      <rect x={78} y={174} width={12} height={12} rx={3} fill="#ffc83d" stroke={INK} strokeWidth={3} />
-      <rect x={94} y={174} width={12} height={12} rx={3} fill="#ff6fb5" stroke={INK} strokeWidth={3} />
-      <rect x={110} y={174} width={12} height={12} rx={3} fill="#22c79a" stroke={INK} strokeWidth={3} />
+      <rect x={86} y={144} width={28} height={14} fill={skin.dark} stroke={INK} strokeWidth={3.5} />
+      <rect x={54} y={152} width={92} height={58} rx={22} fill={skin.body} stroke={INK} strokeWidth={3.5} />
+      <circle cx={100} cy={181} r={7} fill="#7cf5ff" fillOpacity={0.85} />
       {/* ears */}
-      <rect x={14} y={72} width={22} height={42} rx={9} fill={skin.dark} stroke={INK} strokeWidth={5} />
-      <rect x={164} y={72} width={22} height={42} rx={9} fill={skin.dark} stroke={INK} strokeWidth={5} />
+      <rect x={14} y={72} width={22} height={42} rx={9} fill={skin.dark} stroke={INK} strokeWidth={3.5} />
+      <rect x={164} y={72} width={22} height={42} rx={9} fill={skin.dark} stroke={INK} strokeWidth={3.5} />
       {/* head */}
-      <rect x={30} y={38} width={140} height={110} rx={38} fill={skin.body} stroke={INK} strokeWidth={5} />
-      <path d="M48 52 Q60 44 80 44" stroke="#ffffff" strokeOpacity={0.6} strokeWidth={6} strokeLinecap="round" fill="none" />
+      <rect x={30} y={38} width={140} height={110} rx={38} fill={skin.body} stroke={INK} strokeWidth={3.5} />
       {/* face screen */}
       <rect x={46} y={58} width={108} height={74} rx={26} fill={INK} />
-      <ellipse cx={64} cy={116} rx={7} ry={4} fill="#ff8fc7" opacity={0.75} />
-      <ellipse cx={136} cy={116} rx={7} ry={4} fill="#ff8fc7" opacity={0.75} />
       <Eyes mood={mood} blink={blink} />
       <Mouth mood={mood} talking={talking} />
       <Face item={eq.face} />

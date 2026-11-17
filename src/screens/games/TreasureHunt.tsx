@@ -110,9 +110,9 @@ export function TreasureHunt({ level }: { level: number | null }) {
   const small = useMedia('(max-width: 640px)');
 
   return (
-    <Frame round={round} wide hud={<Score n={score} />} resultExtra={prize ? <p className="toy mt-4 px-4 py-3 text-center font-bold" style={{ background: 'var(--pink-soft)' }}>Treasure prize: {prize} for KeyBot! Find it in My Rewards.</p> : undefined}>
+    <Frame round={round} wide hud={<Score n={score} />} resultExtra={prize ? <p className="toy mt-4 px-4 py-3 text-center font-bold">Treasure prize: {prize} for KeyBot! Find it in My Rewards.</p> : undefined}>
       <Confetti fire={fire} />
-      <div className="mb-4"><Bot text={line.text} say={line.say} mood={mood} size={88} className="panel p-4" /></div>
+      <div className="mb-4"><Bot text={line.text} say={line.say} mood={mood} className="panel p-4" /></div>
       <Stage height={360} label="Treasure map">
         <svg className="absolute inset-0 h-full w-full" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden>
           <path d={`M ${stones.map((s) => `${s.x} ${s.y}`).join(' L ')} L 89 ${stones[stones.length - 1].y}`} fill="none" stroke="#fff" strokeWidth={1.4} strokeDasharray="2 2" vectorEffect="non-scaling-stroke" style={{ strokeWidth: 5 }} />

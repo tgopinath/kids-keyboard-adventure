@@ -180,18 +180,18 @@ export function Numbers({ level }: { level: number | null }) {
       <TargetMark id={expected ? `Digit${expected}` : null} />
       <div className="grid gap-4 lg:grid-cols-[1fr_1.2fr]">
         <div className="flex flex-col gap-4">
-          <Bot text={line.text} say={line.say} mood={mood} size={100} className="panel p-4" />
+          <Bot text={line.text} say={line.say} mood={mood} className="panel p-4" />
           <div className="flex items-center gap-3">
             <span className="whitespace-nowrap text-[15px] font-bold tnum" style={{ color: 'var(--muted)' }}>{Math.min(i + 1, qs.length)} / {qs.length}</span>
             <ProgressBar pct={(i / qs.length) * 100} color="sun" label="Questions answered" />
           </div>
         </div>
-        <div className="panel relative flex min-h-[280px] flex-col items-center justify-center gap-4 p-5" style={{ background: 'var(--sun-soft)' }}>
+        <div className="panel relative flex min-h-[260px] flex-col items-center justify-center gap-4 p-5">
           {q && <motion.div key={`${i}-${round.roundId}`} initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }}>{q.show}</motion.div>}
           {q && q.answer.length > 1 && (
             <div className="flex gap-2" aria-label={`You typed ${typed || 'nothing yet'}`}>
               {q.answer.split('').map((c, j) => (
-                <span key={j} className="grid h-14 w-12 place-items-center rounded-xl font-display text-[30px] font-bold" style={{ border: 'var(--bw) solid var(--line)', background: j < typed.length ? 'var(--mint)' : j === typed.length ? 'var(--surface)' : 'var(--surface-2)' }}>
+                <span key={j} className="grid h-14 w-12 place-items-center rounded-xl text-[26px] font-bold" style={{ border: `1px solid ${j === typed.length ? 'var(--primary)' : 'var(--border-strong)'}`, background: j < typed.length ? 'var(--good-soft)' : 'var(--surface)' }}>
                   {j < typed.length ? c : ''}
                 </span>
               ))}

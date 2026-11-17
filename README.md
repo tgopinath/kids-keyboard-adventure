@@ -33,4 +33,4 @@ Deploys on Vercel as a static Vite build (`vercel.json`). Works offline after th
 
 Design: structure and tokens follow the Kolam design system (8-point grid, AA contrast, light / dark / contrast themes, one primary family per app); the look is the brief's bright, chunky toy style with Fredoka for display and Lato for text.
 
-Note for the Android shell: Android's WebView has no speechSynthesis, so in the APK KeyBot talks in speech bubbles only unless a native text-to-speech plugin is added.
+Web only: a responsive website that also installs to the home screen as a PWA. There is no Android or iOS app.

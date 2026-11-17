@@ -128,13 +128,13 @@ export function Memory({ level }: { level: number | null }) {
     <Frame round={round} wide hud={<StarPill n={stars} label="stars this round" />}>
       <TargetMark id={step === 'guess' ? current : null} />
       <div className="grid gap-4 lg:grid-cols-[1.2fr_1fr]">
-        <Bot text={line.text} say={line.say} mood={mood} size={100} className="panel p-4" />
-        <div className="panel relative flex items-center justify-center gap-4 p-4" style={{ background: 'var(--grape-soft)' }}>
+        <Bot text={line.text} say={line.say} mood={mood} className="panel p-4" />
+        <div className="panel relative flex items-center justify-center gap-4 p-4">
           {step === 'look' ? (
             <div className="flex items-center gap-4" role="timer" aria-live="polite">
-              <Eye size={44} aria-hidden />
-              <motion.span key={left} className="font-display text-[80px] font-bold leading-none tnum" initial={{ scale: 1.6, opacity: 0 }} animate={{ scale: 1, opacity: 1 }}>{left}</motion.span>
-              <span className="font-display text-[20px] font-semibold">Look!</span>
+              <Eye size={28} className="muted" aria-hidden />
+              <motion.span key={left} className="text-[56px] font-bold leading-none tnum" initial={{ scale: 1.6, opacity: 0 }} animate={{ scale: 1, opacity: 1 }}>{left}</motion.span>
+              <span className="text-[17px] font-bold">Look carefully</span>
             </div>
           ) : (
             <div className="grid w-full grid-cols-4 gap-2" role="group" aria-label="Choose the hidden letter">

@@ -63,7 +63,7 @@ export function Lives({ left, of }: { left: number; of: number }) {
 }
 
 export function Score({ n }: { n: number }) {
-  return <span className="chip tnum" style={{ background: 'var(--sky-soft)' }} aria-label={`Score ${n}`}>Score {n}</span>;
+  return <span className="chip tnum" aria-label={`Score ${n}`}>Score {n}</span>;
 }
 
 /** Parachute letter used by Falling Letters. */
