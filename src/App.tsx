@@ -1,5 +1,5 @@
 import { AnimatePresence, MotionConfig, motion } from 'framer-motion';
-import { useEffect, useState } from 'react';
+import { lazy, Suspense, useEffect, useState, type ComponentType } from 'react';
 import { installPhysicalKeyboard } from './lib/input';
 import { setAudioPrefs, unlockAudio, sfx } from './lib/audio';
 import { actions, onBadges, useStore } from './lib/store';
@@ -8,23 +8,33 @@ import { BADGES } from './lib/rewards';
 import { ICONS } from './components/ui';
 import { Home } from './screens/Home';
 import { LearnHub, GamesHub } from './screens/Hubs';
-import { MeetKeyboard } from './screens/MeetKeyboard';
-import { FindKey } from './screens/FindKey';
-import { Alphabet } from './screens/Alphabet';
-import { Numbers } from './screens/Numbers';
-import { Memory } from './screens/Memory';
-import { FallingLetters } from './screens/games/FallingLetters';
-import { BubblePop } from './screens/games/BubblePop';
-import { LetterCatcher } from './screens/games/LetterCatcher';
-import { WordBuilderGame } from './screens/games/WordBuilder';
-import { TreasureHunt } from './screens/games/TreasureHunt';
-import { WordAdventure } from './screens/WordAdventure';
-import { Practice } from './screens/Practice';
-import { LearningPath } from './screens/LearningPath';
-import { Rewards } from './screens/Rewards';
-import { MyProgress } from './screens/MyProgress';
-import { Parents } from './screens/Parents';
-import { SettingsScreen } from './screens/Settings';
+
+// Every screen except Home and the hubs is its own chunk, fetched when opened; all of them are
+// warmed in the background after the first paint so offline play keeps working after one visit.
+const loaders: (() => Promise<unknown>)[] = [];
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function screen<K extends string, M extends Record<K, ComponentType<any>>>(load: () => Promise<M>, name: K) {
+  loaders.push(load);
+  return lazy(() => load().then((m) => ({ default: m[name] })));
+}
+const MeetKeyboard = screen(() => import('./screens/MeetKeyboard'), 'MeetKeyboard');
+const FindKey = screen(() => import('./screens/FindKey'), 'FindKey');
+const Alphabet = screen(() => import('./screens/Alphabet'), 'Alphabet');
+const Numbers = screen(() => import('./screens/Numbers'), 'Numbers');
+const Memory = screen(() => import('./screens/Memory'), 'Memory');
+const FallingLetters = screen(() => import('./screens/games/FallingLetters'), 'FallingLetters');
+const BubblePop = screen(() => import('./screens/games/BubblePop'), 'BubblePop');
+const LetterCatcher = screen(() => import('./screens/games/LetterCatcher'), 'LetterCatcher');
+const WordBuilderGame = screen(() => import('./screens/games/WordBuilder'), 'WordBuilderGame');
+const TreasureHunt = screen(() => import('./screens/games/TreasureHunt'), 'TreasureHunt');
+const WordAdventure = screen(() => import('./screens/WordAdventure'), 'WordAdventure');
+const Practice = screen(() => import('./screens/Practice'), 'Practice');
+const LearningPath = screen(() => import('./screens/LearningPath'), 'LearningPath');
+const Rewards = screen(() => import('./screens/Rewards'), 'Rewards');
+const MyProgress = screen(() => import('./screens/MyProgress'), 'MyProgress');
+const Parents = screen(() => import('./screens/Parents'), 'Parents');
+const SettingsScreen = screen(() => import('./screens/Settings'), 'SettingsScreen');
+
 
 function useAppEffects() {
   const settings = useStore((s) => s.settings);
@@ -108,8 +118,16 @@ function NotFound() {
   );
 }
 
+function useWarmScreens() {
+  useEffect(() => {
+    const t = setTimeout(() => loaders.forEach((l) => void l().catch(() => {})), 1500);
+    return () => clearTimeout(t);
+  }, []);
+}
+
 export default function App() {
   useAppEffects();
+  useWarmScreens();
   const route = useRoute();
   const reduced = useStore((s) => s.settings.reducedMotion);
   const lvl = route.params.get('level');
@@ -144,7 +162,7 @@ export default function App() {
     <MotionConfig reducedMotion={reduced ? 'always' : 'user'}>
       <a href="#main" className="skip-link" onClick={(e) => { e.preventDefault(); document.getElementById('main')?.focus(); }}>Skip to content</a>
       <main id="main" tabIndex={-1} className="min-h-dvh outline-none" key={key}>
-        {screen}
+        <Suspense fallback={null}>{screen}</Suspense>
       </main>
       <BadgeToasts />
     </MotionConfig>

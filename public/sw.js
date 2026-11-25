@@ -1,5 +1,5 @@
 // Offline play: pages come from the network when possible, everything else from the cache first.
-const CACHE = 'kka-v1';
+const CACHE = 'kka-v2';
 const SHELL = ['/', '/manifest.webmanifest', '/icons/icon.svg', '/icons/icon-192.png'];
 
 self.addEventListener('install', (e) => {
